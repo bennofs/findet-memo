@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/libs/fab-speed-dial/fab-speed-dial.iml" filepath="$PROJECT_DIR$/.idea/modules/libs/fab-speed-dial/fab-speed-dial.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/findet-memo.iml" filepath="$PROJECT_DIR$/.idea/modules/findet-memo.iml" />
     </modules>
   </component>

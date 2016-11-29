@@ -171,8 +171,8 @@ public class FabSpeedDialBehaviour extends CoordinatorLayout.Behavior<FabSpeedDi
         ViewGroupUtils.getDescendantRect(parent, appBarLayout, rect);
 
         /**
-         * Remove reflection and replace with
-         * AppBarLayout#getMinimumHeightForVisibleOverlappingContent() once made public
+         * TODO: Remove reflection and replace with
+         * AppBarLayout#getMinimumHeightForVisibleOverlappingContent() once made publuc
          */
         int minimumHeightForVisibleOverlappingContent =
                 getMinimumHeightForVisibleOverlappingContent(appBarLayout);
@@ -193,7 +193,7 @@ public class FabSpeedDialBehaviour extends CoordinatorLayout.Behavior<FabSpeedDi
         try {
             Method method = appBarLayout.getClass().getDeclaredMethod("getMinimumHeightForVisibleOverlappingContent");
             method.setAccessible(true);
-            Object value = method.invoke(appBarLayout, (Object[])null);
+            Object value = method.invoke(appBarLayout, null);
             return (int) value;
         } catch (NoSuchMethodException e) {
             e.printStackTrace();

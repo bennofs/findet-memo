@@ -26,10 +26,6 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView viewMemoList;
 
-    public MainActivity() {
-        this.memos = new MemoRepository();
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        memos.update(TextMemo.create("Bla blub", "Lorem ipsum quot erad demonstrantum"));
+
+        this.memos = new MemoRepository(this);
 
         viewMemoList = (RecyclerView) findViewById(R.id.recyclerview_memolist);
         viewMemoList.setLayoutManager(new LinearLayoutManager(this));

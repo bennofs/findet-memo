@@ -1,5 +1,16 @@
 package tu.emi.findetmemo.data;
 
+import android.content.Context;
+import android.widget.Toast;
+
+import com.thoughtworks.xstream.XStream;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -7,12 +18,19 @@ import java.util.Random;
 import java.util.UUID;
 
 public class MemoRepository {
+    private final Context context;
     private HashMap<UUID, Memo> mData;
     private HashSet<Observer> mObservers;
+    private final XStream xstream;
+    private final File storagePath;
 
-    public MemoRepository() {
+    public MemoRepository(Context context) {
+        this.context = context;
         this.mData = new HashMap<>();
         this.mObservers = new HashSet<>();
+        this.xstream = new XStream();
+        this.storagePath = context.getFileStreamPath("memos.xml");
+        load();
     }
 
     public Memo update(Memo newItem) {
@@ -20,17 +38,41 @@ public class MemoRepository {
             onUpdated(newItem);
         else
             onAdded(newItem);
-        return mData.put(newItem.uuid, newItem);
+        Memo old = mData.put(newItem.uuid, newItem);
+        save();
+        return old;
     }
 
     public Memo remove(UUID key) {
         Memo oldItem = mData.remove(key);
         if(oldItem != null) onRemoved(oldItem);
+        save();
         return oldItem;
     }
 
     public Memo get(UUID key) {
         return mData.get(key);
+    }
+
+    private void load() {
+        if(!storagePath.exists()) return;
+        Collection<Memo> memos = (Collection<Memo>) xstream.fromXML(storagePath);
+        for(Memo memo : memos) {
+            mData.put(memo.uuid, memo);
+        }
+    }
+
+    private void save() {
+        try {
+            OutputStream out = new FileOutputStream(storagePath);
+            xstream.toXML(all(), out);
+            out.close();
+            Toast msg = Toast.makeText(context, "saved memos", Toast.LENGTH_SHORT);
+            msg.show();
+        } catch (IOException e) {
+            Toast msg = Toast.makeText(context, "failed to save memos: " + e.getLocalizedMessage(), Toast.LENGTH_LONG);
+            msg.show();
+        }
     }
 
     private void onAdded(Memo newItem) {

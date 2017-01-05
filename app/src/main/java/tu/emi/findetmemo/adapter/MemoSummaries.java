@@ -1,11 +1,13 @@
 package tu.emi.findetmemo.adapter;
 
+import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -25,9 +27,12 @@ public class MemoSummaries extends RecyclerView.Adapter<BaseViewHolder> {
     private final ArrayList<Memo> sortedMemos;
     private final HashMap<Integer, ViewTemplate> viewTypes;
 
-    public MemoSummaries(MemoRepository memos) {
+    private final Activity parent;
+
+    public MemoSummaries(MemoRepository memos, Activity parent) {
         this.comparator = new Memo.TitleComparator();
         this.memos = memos;
+        this.parent = parent;
 
         this.sortedMemos = new ArrayList<>(memos.all());
         Collections.sort(sortedMemos, comparator);
@@ -44,28 +49,54 @@ public class MemoSummaries extends RecyclerView.Adapter<BaseViewHolder> {
 
         observer = memos.registerObserver(new MemoRepository.Observer() {
             @Override
-            public void onChange(Memo from, Memo to) {
-                if (from == null) {
-                    MemoSummaries.this.add(to);
-                } else if (to == null) {
-                    MemoSummaries.this.notifyItemRemoved(sortedMemos.indexOf(from));
-                } else {
-                    MemoSummaries.this.notifyItemChanged(sortedMemos.indexOf(to));
+            public void onUpdated(Memo newItem) {
+                int size = sortedMemos.size();
+                int oldIndex = -1;
+                int newIndex = size;
+                for(int i = 0; i < size && (oldIndex < 0 || newIndex == size); ++i) {
+                    Memo m = sortedMemos.get(i);
+                    if(m.uuid.equals(newItem.uuid)) {
+                        oldIndex = i;
+                    }
+
+                    if(comparator.compare(m, newItem) >= 0) {
+                        newIndex = i;
+                    }
                 }
+
+                if(oldIndex < 0) throw new IllegalArgumentException("memo to update does not exist");
+                sortedMemos.remove(oldIndex);
+
+                if(newIndex > oldIndex) newIndex--;
+                sortedMemos.add(newIndex, newItem);
+
+                notifyItemMoved(oldIndex, newIndex);
+                notifyItemChanged(newIndex);
+            }
+
+            @Override
+            public void onAdded(Memo newItem) {
+                int i = Arrays.binarySearch(sortedMemos.toArray(new Memo[0]), newItem, comparator);
+                if(i < 0) i = -(i + 1);
+                sortedMemos.add(i, newItem);
+                notifyItemInserted(i);
+            }
+
+            @Override
+            public void onRemoved(Memo oldItem) {
+                int size = sortedMemos.size();
+                for(int i = 0; i < size; ++i) {
+                    if(sortedMemos.get(i).uuid.equals(oldItem.uuid)) {
+                        sortedMemos.remove(i);
+                        notifyItemRemoved(i);
+                        return;
+                    }
+                }
+                throw new IllegalArgumentException("memo to remove does not exist");
             }
         });
 
         super.onAttachedToRecyclerView(recyclerView);
-    }
-
-    private void add(Memo memo) {
-        int i = 0;
-        for (; i < sortedMemos.size(); ++i) {
-            if (comparator.compare(sortedMemos.get(i), memo) > 0) break;
-        }
-
-        sortedMemos.add(i, memo);
-        notifyItemInserted(i);
     }
 
     @Override
@@ -97,7 +128,7 @@ public class MemoSummaries extends RecyclerView.Adapter<BaseViewHolder> {
 
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int position) {
-        holder.bind(sortedMemos.get(position));
+        holder.bind(sortedMemos.get(position), parent);
     }
 
     @Override

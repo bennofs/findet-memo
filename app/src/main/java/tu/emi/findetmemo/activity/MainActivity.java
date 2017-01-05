@@ -20,7 +20,7 @@ import tu.emi.findetmemo.data.TextMemo;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int NEW_MEMO_REQUEST = 1;
+    public static final int NEW_MEMO_REQUEST = 1;
 
     private MemoRepository memos;
 
@@ -42,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
             public boolean onMenuItemSelected(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.action_add_text:
-                        Intent intent = new Intent(MainActivity.this, NewTextMemoActivity.class);
+                        Intent intent = new Intent(MainActivity.this, TextMemoActivity.class);
+                        intent.putExtra(Memo.EXTRA_MEMO, TextMemo.createEmpty());
                         MainActivity.this.startActivityForResult(intent, NEW_MEMO_REQUEST);
                         break;
                     default:
@@ -52,10 +53,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        memos.add(TextMemo.create("foo", "BAR"));
+        memos.update(TextMemo.create("Bla blub", "Lorem ipsum quot erad demonstrantum"));
+
         viewMemoList = (RecyclerView) findViewById(R.id.recyclerview_memolist);
         viewMemoList.setLayoutManager(new LinearLayoutManager(this));
-        viewMemoList.setAdapter(new MemoSummaries(memos));
+        viewMemoList.setAdapter(new MemoSummaries(memos, this));
     }
 
     @Override
@@ -70,10 +72,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void handleNewMemo(int resultCode, Memo memo) {
-        if (resultCode != RESULT_OK) return;
-        memos.add(memo);
+        if (resultCode != RESULT_OK || memo.isEmpty()) return;
+        memos.update(memo);
 
-        Toast t = Toast.makeText(this, "Created new memo", Toast.LENGTH_LONG);
+        Toast t = Toast.makeText(this, "Updated memo " + memo.common.title, Toast.LENGTH_LONG);
         t.show();
     }
 

@@ -15,31 +15,44 @@ public class MemoRepository {
         this.mObservers = new HashSet<>();
     }
 
-    public Memo add(Memo memo) {
-        mData.put(memo.uuid, memo);
-        onChange(null, memo);
-        return memo;
+    public Memo update(Memo newItem) {
+        if(mData.containsKey(newItem.uuid))
+            onUpdated(newItem);
+        else
+            onAdded(newItem);
+        return mData.put(newItem.uuid, newItem);
     }
 
-    private void onChange(Memo oldItem, Memo newItem) {
-        for (Observer o : mObservers) o.onChange(oldItem, newItem);
+    public Memo remove(UUID key) {
+        Memo oldItem = mData.remove(key);
+        if(oldItem != null) onRemoved(oldItem);
+        return oldItem;
+    }
+
+    public Memo get(UUID key) {
+        return mData.get(key);
+    }
+
+    private void onAdded(Memo newItem) {
+        for (Observer o : mObservers) o.onAdded(newItem);
+    }
+
+    private void onUpdated(Memo newItem) {
+        for (Observer o : mObservers) o.onUpdated(newItem);
+    }
+
+    private void onRemoved(Memo oldItem) {
+        for (Observer o : mObservers) o.onRemoved(oldItem);
     }
 
     public Collection<Memo> all() {
         return mData.values();
     }
 
-    private int findUnusedId() {
-        int id = 1;
-        Random rand = new Random();
-        do {
-            id = rand.nextInt();
-        } while (mData.containsKey((Integer) id));
-        return id;
-    }
-
-    public static interface Observer {
-        public void onChange(Memo oldItem, Memo newItem);
+    public interface Observer {
+        void onUpdated(Memo newItem);
+        void onAdded(Memo newItem);
+        void onRemoved(Memo oldItem);
     }
 
     public Observer registerObserver(Observer observer) {

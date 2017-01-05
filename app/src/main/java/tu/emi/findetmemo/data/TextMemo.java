@@ -9,18 +9,33 @@ import tu.emi.findetmemo.view.ViewTemplate;
 public class TextMemo extends Memo {
     public final String textBody;
 
-    public TextMemo(UUID uuid, String title, Date creationDate, Date lastModificationDate, String textBody) {
-        super(uuid, title, creationDate, lastModificationDate);
-        this.textBody = textBody;
+    public TextMemo(UUID uuid, Common common, String textBody) {
+        super(uuid, common);
+        this.textBody = textBody.trim();
     }
 
     public static TextMemo create(String title, String textBody) {
-        return new TextMemo(UUID.randomUUID(), title, new Date(), new Date(), textBody);
+        Date now = new Date();
+        Common common = new Common(title, now, now);
+        return new TextMemo(UUID.randomUUID(), common, textBody);
+    }
+
+    public static TextMemo createEmpty() {
+        return create("", "");
     }
 
     @Override
-    public <T> T visit(MemoVisitor<T> visitor) {
-        return visitor.handle(this);
+    public boolean isEmpty() {
+        return common.isEmpty() && textBody.isEmpty();
+    }
+
+    @Override
+    public Memo withCommon(Common common) {
+        return new TextMemo(this.uuid, common, this.textBody);
+    }
+
+    public TextMemo withTextBody(String body) {
+        return new TextMemo(this.uuid, this.common, body);
     }
 
     @Override

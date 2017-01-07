@@ -1,6 +1,5 @@
 package tu.emi.findetmemo.view;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.view.View;
@@ -28,7 +27,7 @@ public class TextMemoSummary extends ViewTemplate {
         }
 
         @Override
-        public void bind(Object data, final Activity parent) {
+        public void bind(Object data, final MainActivity parent) {
             final TextMemo memo = (TextMemo) data;
             viewTitle.setText(memo.common.title);
 
@@ -37,10 +36,7 @@ public class TextMemoSummary extends ViewTemplate {
             viewCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(parent, TextMemoActivity.class);
-                    intent.putExtra(Memo.EXTRA_MEMO, memo);
-
-                    parent.startActivityForResult(intent, MainActivity.NEW_MEMO_REQUEST);
+                    parent.viewMemo(memo);
                 }
             });
         }

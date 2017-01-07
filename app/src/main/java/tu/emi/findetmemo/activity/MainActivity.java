@@ -20,7 +20,7 @@ import tu.emi.findetmemo.data.TextMemo;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final int NEW_MEMO_REQUEST = 1;
+    private static final int EDIT_MEMO_REQUEST = 1;
 
     private MemoRepository memos;
 
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.action_add_text:
                         Intent intent = new Intent(MainActivity.this, TextMemoActivity.class);
                         intent.putExtra(Memo.EXTRA_MEMO, TextMemo.createEmpty());
-                        MainActivity.this.startActivityForResult(intent, NEW_MEMO_REQUEST);
+                        MainActivity.this.startActivityForResult(intent, EDIT_MEMO_REQUEST);
                         break;
                     default:
                         break;
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case NEW_MEMO_REQUEST:
+            case EDIT_MEMO_REQUEST:
                 handleNewMemo(resultCode, (Memo) data.getSerializableExtra(Memo.EXTRA_MEMO));
                 break;
             default:
@@ -98,4 +98,10 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void viewMemo(TextMemo memo) {
+        Intent intent = new Intent(this, TextMemoActivity.class);
+        intent.putExtra(Memo.EXTRA_MEMO, memo);
+
+        startActivityForResult(intent, MainActivity.EDIT_MEMO_REQUEST);
+    }
 }

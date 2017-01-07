@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
+import tu.emi.findetmemo.activity.MainActivity;
 import tu.emi.findetmemo.data.Memo;
 import tu.emi.findetmemo.data.MemoRepository;
 import tu.emi.findetmemo.view.BaseViewHolder;
@@ -27,9 +28,9 @@ public class MemoSummaries extends RecyclerView.Adapter<BaseViewHolder> {
     private final ArrayList<Memo> sortedMemos;
     private final HashMap<Integer, ViewTemplate> viewTypes;
 
-    private final Activity parent;
+    private final MainActivity parent;
 
-    public MemoSummaries(MemoRepository memos, Activity parent) {
+    public MemoSummaries(MemoRepository memos, MainActivity parent) {
         this.comparator = new Memo.TitleComparator();
         this.memos = memos;
         this.parent = parent;

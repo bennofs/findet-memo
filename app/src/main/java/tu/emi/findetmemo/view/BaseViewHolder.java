@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import tu.emi.findetmemo.activity.MainActivity;
+
 abstract public class BaseViewHolder extends RecyclerView.ViewHolder {
     public BaseViewHolder(View itemView) {
         super(itemView);
@@ -13,5 +15,5 @@ abstract public class BaseViewHolder extends RecyclerView.ViewHolder {
         return itemView.findViewById(id);
     }
 
-    public abstract void bind(Object data, Activity parent);
+    public abstract void bind(Object data, MainActivity parent);
 }

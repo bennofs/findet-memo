@@ -53,21 +53,22 @@ public class MemoSummaries extends RecyclerView.Adapter<BaseViewHolder> {
                 int size = sortedMemos.size();
                 int oldIndex = -1;
                 int newIndex = size;
-                for(int i = 0; i < size && (oldIndex < 0 || newIndex == size); ++i) {
+                for (int i = 0; i < size && (oldIndex < 0 || newIndex == size); ++i) {
                     Memo m = sortedMemos.get(i);
-                    if(m.uuid.equals(newItem.uuid)) {
+                    if (m.uuid.equals(newItem.uuid)) {
                         oldIndex = i;
                     }
 
-                    if(comparator.compare(m, newItem) >= 0) {
+                    if (comparator.compare(m, newItem) >= 0) {
                         newIndex = i;
                     }
                 }
 
-                if(oldIndex < 0) throw new IllegalArgumentException("memo to update does not exist");
+                if (oldIndex < 0)
+                    throw new IllegalArgumentException("memo to update does not exist");
                 sortedMemos.remove(oldIndex);
 
-                if(newIndex > oldIndex) newIndex--;
+                if (newIndex > oldIndex) newIndex--;
                 sortedMemos.add(newIndex, newItem);
 
                 notifyItemMoved(oldIndex, newIndex);
@@ -77,7 +78,7 @@ public class MemoSummaries extends RecyclerView.Adapter<BaseViewHolder> {
             @Override
             public void onAdded(Memo newItem) {
                 int i = Arrays.binarySearch(sortedMemos.toArray(new Memo[0]), newItem, comparator);
-                if(i < 0) i = -(i + 1);
+                if (i < 0) i = -(i + 1);
                 sortedMemos.add(i, newItem);
                 notifyItemInserted(i);
             }
@@ -85,8 +86,8 @@ public class MemoSummaries extends RecyclerView.Adapter<BaseViewHolder> {
             @Override
             public void onRemoved(Memo oldItem) {
                 int size = sortedMemos.size();
-                for(int i = 0; i < size; ++i) {
-                    if(sortedMemos.get(i).uuid.equals(oldItem.uuid)) {
+                for (int i = 0; i < size; ++i) {
+                    if (sortedMemos.get(i).uuid.equals(oldItem.uuid)) {
                         sortedMemos.remove(i);
                         notifyItemRemoved(i);
                         return;
@@ -108,7 +109,7 @@ public class MemoSummaries extends RecyclerView.Adapter<BaseViewHolder> {
 
         memos.unregisterObserver(observer);
         attachedCount--;
-        if(attachedCount != 0) throw new RuntimeException("shouldn't happen");
+        if (attachedCount != 0) throw new RuntimeException("shouldn't happen");
 
         super.onDetachedFromRecyclerView(recyclerView);
     }

@@ -34,5 +34,7 @@ public class AudioMemo extends Memo {
     }
 
     @Override
-    public ViewTemplate summaryViewTemplate() { return new AudioMemoSummary(); }
+    public ViewTemplate summaryViewTemplate() {
+        return new AudioMemoSummary();
+    }
 }

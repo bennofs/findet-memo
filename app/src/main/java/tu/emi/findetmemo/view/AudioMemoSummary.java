@@ -15,7 +15,7 @@ import tu.emi.findetmemo.data.AudioMemo;
 
 public class AudioMemoSummary extends ViewTemplate {
     private static class ViewHolder extends BaseViewHolder implements SingleAudioPlayer.AudioPlayerStateListener {
-        private enum ButtonAction { Replay, Play, Pause }
+        private enum ButtonAction {Replay, Play, Pause}
 
         private final TextView viewTitle;
         private final TextView viewDate;
@@ -39,7 +39,7 @@ public class AudioMemoSummary extends ViewTemplate {
 
         @Override
         public void bind(final Object data, final MainActivity parent) {
-            memo = (AudioMemo)data;
+            memo = (AudioMemo) data;
             viewTitle.setText(memo.common.title);
             viewTitle.setVisibility(memo.common.title.isEmpty() ? View.GONE : View.VISIBLE);
 
@@ -72,10 +72,16 @@ public class AudioMemoSummary extends ViewTemplate {
 
                 @Override
                 public void onClick(View v) {
-                    switch(nextAction) {
-                        case Play: play(viewSeek.getProgress()); break;
-                        case Replay: play(0); break;
-                        case Pause: player.stop(); break;
+                    switch (nextAction) {
+                        case Play:
+                            play(viewSeek.getProgress());
+                            break;
+                        case Replay:
+                            play(0);
+                            break;
+                        case Pause:
+                            player.stop();
+                            break;
                     }
                 }
             });

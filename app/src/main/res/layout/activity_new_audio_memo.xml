@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:src="@drawable/ic_pause_white_24dp"/>
+            android:src="@drawable/ic_pause_white_24dp" />
 
 
         <TextView
@@ -55,8 +55,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="15dp"
             android:text="@string/time_zero"
-            tools:text="00:02:12"
-            />
+            tools:text="00:02:12" />
 
         <TextView
             android:layout_width="match_parent"
@@ -64,7 +63,6 @@
             android:layout_below="@id/fab_audiomemo"
             android:layout_marginTop="20dp"
             android:textAlignment="center"
-            android:text="@string/recording_in_progress"
-            />
+            android:text="@string/recording_in_progress" />
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

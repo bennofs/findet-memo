@@ -26,9 +26,13 @@ public class SingleAudioPlayer {
 
     public interface AudioPlayerStateListener {
         boolean handlesFile(File file);
+
         void onPositionChanged(int pos);
+
         void onCompleted();
+
         void onPaused();
+
         void onStart();
     }
 
@@ -41,9 +45,9 @@ public class SingleAudioPlayer {
         this.listener = listener;
         this.file = file;
 
-        if(completed) {
+        if (completed) {
             this.listener.onCompleted();
-        } else if(!this.player.isPlaying()) {
+        } else if (!this.player.isPlaying()) {
             updateCurrentPosition();
             this.listener.onPaused();
         } else {

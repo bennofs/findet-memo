@@ -4,13 +4,13 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -94,7 +94,7 @@ public class NewAudioMemoActivity extends AppCompatActivity {
     }
 
     private void startRecording() {
-        if(recorder == null) recorder = new MediaRecorder();
+        if (recorder == null) recorder = new MediaRecorder();
 
         final File outputFileName = getFileStreamPath("recording_" + uuid.toString() + "_" + Integer.toString(outputFiles.size()));
 
@@ -124,11 +124,10 @@ public class NewAudioMemoActivity extends AppCompatActivity {
         }
 
 
-
     }
 
     private void updateRecordingInfo() {
-        if(lastRecordStartTime < 0) return;
+        if (lastRecordStartTime < 0) return;
 
         final long oneNanoSec = 1_000_000_000;
         final long time = (outputFilesDuration + (System.nanoTime() - lastRecordStartTime)) / oneNanoSec;
@@ -146,7 +145,7 @@ public class NewAudioMemoActivity extends AppCompatActivity {
     }
 
     private void stopRecording() {
-        if(recorder == null || lastRecordStartTime < 0) return;
+        if (recorder == null || lastRecordStartTime < 0) return;
 
 
         long lastRecordStopTime = System.nanoTime();
@@ -169,7 +168,7 @@ public class NewAudioMemoActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        if(recorder != null) {
+        if (recorder != null) {
             stopRecording();
             recorder.release();
             recorder = null;
@@ -179,14 +178,14 @@ public class NewAudioMemoActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if(recorder != null) {
+        if (recorder != null) {
             stopRecording();
             recorder.release();
             recorder = null;
         }
-        for(File file : outputFiles) {
+        for (File file : outputFiles) {
             System.out.println("deleting file");
-            if(!file.delete()) {
+            if (!file.delete()) {
                 System.out.println("warning: deleting failed");
             }
         }
@@ -208,7 +207,7 @@ public class NewAudioMemoActivity extends AppCompatActivity {
         try {
             Intent result = new Intent();
             mergeAudioFiles(outputFiles, target);
-            AudioMemo memo = AudioMemo.create(title, target, (int)(outputFilesDuration / oneMilliSec));
+            AudioMemo memo = AudioMemo.create(title, target, (int) (outputFilesDuration / oneMilliSec));
             result.putExtra(Memo.EXTRA_MEMO, memo);
             setResult(RESULT_OK, result);
             finish();
@@ -225,7 +224,7 @@ public class NewAudioMemoActivity extends AppCompatActivity {
 
     private static void mergeAudioFiles(List<File> files, File target) throws IOException {
         ArrayList<Track> tracks = new ArrayList<>();
-        for(File file : files) {
+        for (File file : files) {
             Movie movie = MovieCreator.build(file.toString());
             for (Track track : movie.getTracks()) {
                 tracks.add(track);
@@ -233,7 +232,8 @@ public class NewAudioMemoActivity extends AppCompatActivity {
         }
 
         Movie outputMovie = new Movie();
-        if(!tracks.isEmpty()) outputMovie.addTrack(new AppendTrack(tracks.toArray(new Track[tracks.size()])));
+        if (!tracks.isEmpty())
+            outputMovie.addTrack(new AppendTrack(tracks.toArray(new Track[tracks.size()])));
         Container container = new DefaultMp4Builder().build(outputMovie);
         FileChannel outputChannel = new RandomAccessFile(target, "rw").getChannel();
         container.writeContainer(outputChannel);
@@ -242,7 +242,7 @@ public class NewAudioMemoActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case android.R.id.home: {
                 finishSuccess();
             }

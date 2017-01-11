@@ -31,7 +31,7 @@ public class MemoRepository {
     }
 
     public void update(Memo newItem) {
-        if(mData.containsKey(newItem.uuid))
+        if (mData.containsKey(newItem.uuid))
             onUpdated(newItem);
         else
             onAdded(newItem);
@@ -41,7 +41,7 @@ public class MemoRepository {
 
     public Memo remove(UUID key) {
         Memo oldItem = mData.remove(key);
-        if(oldItem != null) onRemoved(oldItem);
+        if (oldItem != null) onRemoved(oldItem);
         save();
         return oldItem;
     }
@@ -51,7 +51,7 @@ public class MemoRepository {
     }
 
     private void load() {
-        if(!storagePath.exists()) return;
+        if (!storagePath.exists()) return;
         xstream.fromXML(storagePath, mData);
     }
 
@@ -86,7 +86,9 @@ public class MemoRepository {
 
     public interface Observer {
         void onUpdated(Memo newItem);
+
         void onAdded(Memo newItem);
+
         void onRemoved(Memo oldItem);
     }
 

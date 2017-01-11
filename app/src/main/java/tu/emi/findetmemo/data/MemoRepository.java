@@ -16,7 +16,7 @@ import java.util.UUID;
 
 public class MemoRepository {
     private final Context context;
-    private final HashMap<UUID, Memo> mData;
+    private HashMap<UUID, Memo> mData;
     private final HashSet<Observer> mObservers;
     private final XStream xstream;
     private final File storagePath;
@@ -52,7 +52,8 @@ public class MemoRepository {
 
     private void load() {
         if (!storagePath.exists()) return;
-        xstream.fromXML(storagePath, mData);
+        //noinspection unchecked
+        mData = (HashMap<UUID, Memo>)xstream.fromXML(storagePath);
     }
 
     private void save() {

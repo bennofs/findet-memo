@@ -156,13 +156,13 @@ public class SingleAudioPlayer {
 
 
     private void updateCurrentPosition() {
-        if (!hasListener() || seekInProgress) return;
+        if (player == null || !hasListener() || seekInProgress) return;
 
         listener.onPositionChanged(player.getCurrentPosition());
     }
 
     private void startUpdateLoop() {
-        if (!hasListener() || completed) return;
+        if (player == null || !hasListener() || completed) return;
 
         updateCurrentPosition();
         handler.postDelayed(new Runnable() {

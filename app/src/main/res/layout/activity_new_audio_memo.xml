@@ -2,7 +2,6 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_audiomemo"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -19,13 +18,13 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            android:title="New Memo">
+            android:title="@string/new_memo">
 
             <EditText
                 android:id="@+id/edittext_audiomemo_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Title ..." />
+                android:hint="@string/title_hint" />
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
@@ -55,28 +54,17 @@
             android:layout_above="@id/fab_audiomemo"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="15dp"
-            android:text="00:00:00"
+            android:text="@string/time_zero"
             tools:text="00:02:12"
             />
 
         <TextView
-            android:id="@+id/textview_audiomemo_state"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/fab_audiomemo"
             android:layout_marginTop="20dp"
             android:textAlignment="center"
-            android:text="Aufnahme läuft\nTippe den Button, um die Aufnahme zu beenden"
+            android:text="@string/recording_in_progress"
             />
-
-        <Button
-            android:id="@+id/button_audiomemo_test_playback"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Test play"
-            android:layout_alignParentBottom="true"
-            />
-
-
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

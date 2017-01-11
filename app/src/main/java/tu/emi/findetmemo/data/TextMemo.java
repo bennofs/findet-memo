@@ -9,19 +9,15 @@ import tu.emi.findetmemo.view.ViewTemplate;
 public class TextMemo extends Memo {
     public final String textBody;
 
-    public TextMemo(UUID uuid, Common common, String textBody) {
+    private TextMemo(UUID uuid, Common common, String textBody) {
         super(uuid, common);
         this.textBody = textBody.trim();
     }
 
-    public static TextMemo create(String title, String textBody) {
-        final Date now = new Date();
-        final Common common = new Common(title, now, now);
-        return new TextMemo(UUID.randomUUID(), common, textBody);
-    }
-
     public static TextMemo createEmpty() {
-        return create("", "");
+        final Date now = new Date();
+        final Common common = new Common("", now, now);
+        return new TextMemo(UUID.randomUUID(), common, "");
     }
 
     @Override

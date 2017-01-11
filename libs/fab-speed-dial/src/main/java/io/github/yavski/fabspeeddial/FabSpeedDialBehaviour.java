@@ -17,7 +17,6 @@
 package io.github.yavski.fabspeeddial;
 
 import android.content.Context;
-import android.graphics.Rect;
 import android.os.Build;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -27,8 +26,6 @@ import android.support.v4.view.ViewPropertyAnimatorCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.List;
 
 
@@ -53,6 +50,7 @@ import java.util.List;
  * <p>
  * Created by yavorivanov on 03/01/2016.
  */
+@SuppressWarnings({"WeakerAccess", "UnusedParameters"})
 public class FabSpeedDialBehaviour extends CoordinatorLayout.Behavior<FabSpeedDial> {
 
     // We only support the FAB <> Snackbar shift movement on Honeycomb and above. This is
@@ -61,7 +59,6 @@ public class FabSpeedDialBehaviour extends CoordinatorLayout.Behavior<FabSpeedDi
 
     private ViewPropertyAnimatorCompat mFabTranslationYAnimator;
     private float mFabTranslationY;
-    private Rect mTmpRect;
 
     public FabSpeedDialBehaviour() {
 
@@ -156,53 +153,7 @@ public class FabSpeedDialBehaviour extends CoordinatorLayout.Behavior<FabSpeedDi
                                         FabSpeedDial child) {
         final CoordinatorLayout.LayoutParams lp =
                 (CoordinatorLayout.LayoutParams) child.getLayoutParams();
-        if (lp.getAnchorId() != appBarLayout.getId()) {
-            // The anchor ID doesn't match the dependency, so we won't automatically
-            // show/hide the FAB
-            return false;
-        }
+        return lp.getAnchorId() == appBarLayout.getId();
 
-        if (mTmpRect == null) {
-            mTmpRect = new Rect();
-        }
-
-        // First, let's get the visible rect of the dependency
-        final Rect rect = mTmpRect;
-        ViewGroupUtils.getDescendantRect(parent, appBarLayout, rect);
-
-        /**
-         * TODO: Remove reflection and replace with
-         * AppBarLayout#getMinimumHeightForVisibleOverlappingContent() once made publuc
-         */
-        int minimumHeightForVisibleOverlappingContent =
-                getMinimumHeightForVisibleOverlappingContent(appBarLayout);
-        if (minimumHeightForVisibleOverlappingContent == -1) { // the api has changed, return
-            return true;
-        }
-        if (rect.bottom <= minimumHeightForVisibleOverlappingContent) {
-            // If the anchor's bottom is below the seam, we'll animate our FAB out
-            // child.hide();
-        } else {
-            // Else, we'll animate our FAB back in
-            // child.show();
-        }
-        return true;
     }
-
-    private int getMinimumHeightForVisibleOverlappingContent(AppBarLayout appBarLayout) {
-        try {
-            Method method = appBarLayout.getClass().getDeclaredMethod("getMinimumHeightForVisibleOverlappingContent");
-            method.setAccessible(true);
-            Object value = method.invoke(appBarLayout, null);
-            return (int) value;
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return -1;
-    }
-
 }

@@ -6,21 +6,18 @@ import android.widget.Toast;
 import com.thoughtworks.xstream.XStream;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.UUID;
 
 public class MemoRepository {
     private final Context context;
-    private HashMap<UUID, Memo> mData;
-    private HashSet<Observer> mObservers;
+    private final HashMap<UUID, Memo> mData;
+    private final HashSet<Observer> mObservers;
     private final XStream xstream;
     private final File storagePath;
 
@@ -33,14 +30,13 @@ public class MemoRepository {
         load();
     }
 
-    public Memo update(Memo newItem) {
+    public void update(Memo newItem) {
         if(mData.containsKey(newItem.uuid))
             onUpdated(newItem);
         else
             onAdded(newItem);
-        Memo old = mData.put(newItem.uuid, newItem);
+        mData.put(newItem.uuid, newItem);
         save();
-        return old;
     }
 
     public Memo remove(UUID key) {
@@ -56,16 +52,13 @@ public class MemoRepository {
 
     private void load() {
         if(!storagePath.exists()) return;
-        Collection<Memo> memos = (Collection<Memo>) xstream.fromXML(storagePath);
-        for(Memo memo : memos) {
-            mData.put(memo.uuid, memo);
-        }
+        xstream.fromXML(storagePath, mData);
     }
 
     private void save() {
         try {
             OutputStream out = new FileOutputStream(storagePath);
-            xstream.toXML(all(), out);
+            xstream.toXML(mData, out);
             out.close();
             Toast msg = Toast.makeText(context, "saved memos", Toast.LENGTH_SHORT);
             msg.show();

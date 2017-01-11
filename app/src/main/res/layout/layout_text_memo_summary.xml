@@ -9,42 +9,33 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="8dp"
         android:layout_marginTop="16dp">
 
         <TextView
-            android:layout_marginBottom="16dp"
             android:id="@+id/textview_memosummary_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:textAppearance="?android:textAppearanceLarge"
             android:textSize="24sp"
             android:textStyle="bold"
             tools:text="This is a memo title" />
 
-        <LinearLayout
-            android:layout_below="@id/textview_memosummary_title"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/textview_memosummary_date"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical|right">
-
-            <ImageView
-                android:alpha="0.54"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_access_time_black_24dp"/>
-
-            <TextView
-                android:id="@+id/textview_memosummary_date"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_marginLeft="2dp"
-                tools:text="3 days ago"
-                />
-        </LinearLayout>
-
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/textview_memosummary_title"
+            android:drawableLeft="@drawable/ic_access_time_gray_24dp"
+            android:drawablePadding="4dp"
+            android:drawableStart="@drawable/ic_access_time_gray_24dp"
+            android:gravity="center_vertical|end"
+            tools:text="3 days ago" />
 
     </RelativeLayout>
 

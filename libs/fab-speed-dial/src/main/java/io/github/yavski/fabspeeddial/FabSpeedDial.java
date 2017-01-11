@@ -57,15 +57,14 @@ import java.util.Map;
 
 import io.github.yavski.fabmenu.R;
 
-/**
- * Created by yavorivanov on 01/01/2016.
- */
+@SuppressWarnings({"WeakerAccess", "unused"})
 @CoordinatorLayout.DefaultBehavior(FabSpeedDialBehaviour.class)
 public class FabSpeedDial extends LinearLayout implements View.OnClickListener {
 
     /**
      * Called to notify of close and selection changes.
      */
+    @SuppressWarnings({"EmptyMethod", "SameReturnValue", "UnusedParameters"})
     public interface MenuListener {
 
         /**
@@ -300,6 +299,7 @@ public class FabSpeedDial extends LinearLayout implements View.OnClickListener {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     touchGuard.setBackground(touchGuardDrawable);
                 } else {
+                    //noinspection deprecation
                     touchGuard.setBackgroundDrawable(touchGuardDrawable);
                 }
             }

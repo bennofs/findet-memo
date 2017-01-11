@@ -25,8 +25,6 @@ public class MainActivity extends AppCompatActivity {
 
     private MemoRepository memos;
 
-    private RecyclerView viewMemoList;
-
     private SingleAudioPlayer singlePlayer;
 
     @Override
@@ -36,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         FabSpeedDial menuAddNote = (FabSpeedDial) findViewById(R.id.fab_menu_add_note);
+        if(menuAddNote == null) throw new RuntimeException("fab menu not found");
         menuAddNote.setMenuListener(new SimpleMenuListenerAdapter() {
             @Override
             public boolean onMenuItemSelected(MenuItem menuItem) {
@@ -56,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
 
         this.memos = new MemoRepository(this);
 
-        viewMemoList = (RecyclerView) findViewById(R.id.recyclerview_memolist);
+        RecyclerView viewMemoList = (RecyclerView) findViewById(R.id.recyclerview_memolist);
+        if(viewMemoList == null) throw new RuntimeException("recyclerview memo list not found");
         viewMemoList.setLayoutManager(new LinearLayoutManager(this));
         viewMemoList.setAdapter(new MemoSummaries(memos, this));
 

@@ -5,14 +5,13 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
 
 public class SingleAudioPlayer {
-    public static final int UPDATE_INTERVAL_MS = 30;
+    private static final int UPDATE_INTERVAL_MS = 30;
 
     private final Handler handler;
     private final Context context;
@@ -58,7 +57,7 @@ public class SingleAudioPlayer {
         if (this.file != file) {
             listener.onPaused();
             return;
-        };
+        }
 
         setListener(file, listener);
     }
@@ -85,7 +84,6 @@ public class SingleAudioPlayer {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 completed = true;
-                Log.d("AUDIO", "complete");
                 player.stop();
                 if (hasListener()) listener.onCompleted();
             }
@@ -104,7 +102,7 @@ public class SingleAudioPlayer {
     public void play(final File file, final int offset, final AudioPlayerStateListener listener) {
         stop();
 
-        if (this.file != file) {
+        if (player == null || this.file != file) {
             resetPlayer();
             try {
                 player.setDataSource(context, Uri.fromFile(file));

@@ -25,6 +25,7 @@ public class TextMemoActivity extends AppCompatActivity {
 
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
+        //noinspection ConstantConditions
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -64,7 +65,7 @@ public class TextMemoActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    void finishSuccess() {
+    private void finishSuccess() {
         final String title = editTextTitle.getText().toString().trim();
         final String content = editTextContent.getText().toString().trim();
         final Memo changedMemo =
@@ -76,7 +77,7 @@ public class TextMemoActivity extends AppCompatActivity {
         finish();
     }
 
-    void finishCancel() {
+    private void finishCancel() {
         Intent result = new Intent();
         setResult(RESULT_CANCELED, result);
         finish();

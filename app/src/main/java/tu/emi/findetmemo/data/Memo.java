@@ -35,7 +35,7 @@ abstract public class Memo implements Serializable {
     public final UUID uuid;
     public final Common common;
 
-    public Memo(UUID uuid, Common common) {
+    Memo(UUID uuid, Common common) {
         this.uuid = uuid;
         this.common = common;
     }

@@ -2,7 +2,6 @@ package tu.emi.findetmemo.data;
 
 import java.io.File;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 import tu.emi.findetmemo.view.AudioMemoSummary;
@@ -12,7 +11,7 @@ public class AudioMemo extends Memo {
     public final File audioFile;
     public final int duration;
 
-    public AudioMemo(UUID uuid, Common common, File audioFile, int duration) {
+    private AudioMemo(UUID uuid, Common common, File audioFile, int duration) {
         super(uuid, common);
         this.audioFile = audioFile;
         this.duration = duration;

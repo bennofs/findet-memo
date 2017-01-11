@@ -5,7 +5,7 @@ import android.view.View;
 abstract public class ViewTemplate {
     public final int layoutRes;
 
-    protected ViewTemplate(int layoutRes) {
+    ViewTemplate(int layoutRes) {
         this.layoutRes = layoutRes;
     }
 

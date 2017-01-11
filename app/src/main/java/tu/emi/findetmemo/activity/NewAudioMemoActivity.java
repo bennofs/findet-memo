@@ -3,10 +3,7 @@ package tu.emi.findetmemo.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.MediaExtractor;
-import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -17,7 +14,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +30,7 @@ import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import tu.emi.findetmemo.R;
@@ -44,18 +41,18 @@ public class NewAudioMemoActivity extends AppCompatActivity {
 
     private static final int RECORD_AUDIO_PERMISSION_REQUEST = 1;
 
-    MediaRecorder recorder;
-    UUID uuid;
-    Handler handler;
+    private MediaRecorder recorder;
+    private UUID uuid;
+    private Handler handler;
 
-    ArrayList<File> outputFiles;
-    long outputFilesDuration = 0;
-    long lastRecordStartTime = -1;
-    File lastRecordOutputFile;
+    private ArrayList<File> outputFiles;
+    private long outputFilesDuration = 0;
+    private long lastRecordStartTime = -1;
+    private File lastRecordOutputFile;
 
-    FloatingActionButton fab;
-    TextView viewRecordingDuration;
-    TextView viewTitle;
+    private FloatingActionButton fab;
+    private TextView viewRecordingDuration;
+    private TextView viewTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +61,7 @@ public class NewAudioMemoActivity extends AppCompatActivity {
 
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
+        //noinspection ConstantConditions
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -95,7 +93,7 @@ public class NewAudioMemoActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    void startRecording() {
+    private void startRecording() {
         if(recorder == null) recorder = new MediaRecorder();
 
         final File outputFileName = getFileStreamPath("recording_" + uuid.toString() + "_" + Integer.toString(outputFiles.size()));
@@ -138,7 +136,7 @@ public class NewAudioMemoActivity extends AppCompatActivity {
         final long minutes = (time / 60) % 60;
         final long hours = time / 3600;
 
-        viewRecordingDuration.setText(String.format("%02d:%02d:%02d", hours, minutes, seconds));
+        viewRecordingDuration.setText(String.format(Locale.US, "%02d:%02d:%02d", hours, minutes, seconds));
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -188,7 +186,9 @@ public class NewAudioMemoActivity extends AppCompatActivity {
         }
         for(File file : outputFiles) {
             System.out.println("deleting file");
-            file.delete();
+            if(!file.delete()) {
+                System.out.println("warning: deleting failed");
+            }
         }
         super.onDestroy();
     }

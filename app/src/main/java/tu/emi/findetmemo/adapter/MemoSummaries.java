@@ -1,7 +1,7 @@
 package tu.emi.findetmemo.adapter;
 
-import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 
 import tu.emi.findetmemo.activity.MainActivity;
 import tu.emi.findetmemo.data.Memo;
@@ -26,7 +25,7 @@ public class MemoSummaries extends RecyclerView.Adapter<BaseViewHolder> {
     private int attachedCount = 0;
 
     private final ArrayList<Memo> sortedMemos;
-    private final HashMap<Integer, ViewTemplate> viewTypes;
+    private final SparseArray<ViewTemplate> viewTypes;
 
     private final MainActivity parent;
 
@@ -38,7 +37,7 @@ public class MemoSummaries extends RecyclerView.Adapter<BaseViewHolder> {
         this.sortedMemos = new ArrayList<>(memos.all());
         Collections.sort(sortedMemos, comparator);
 
-        this.viewTypes = new HashMap<>();
+        this.viewTypes = new SparseArray<>();
     }
 
     @Override
@@ -109,7 +108,7 @@ public class MemoSummaries extends RecyclerView.Adapter<BaseViewHolder> {
 
         memos.unregisterObserver(observer);
         attachedCount--;
-        assert (attachedCount == 0);
+        if(attachedCount != 0) throw new RuntimeException("shouldn't happen");
 
         super.onDetachedFromRecyclerView(recyclerView);
     }

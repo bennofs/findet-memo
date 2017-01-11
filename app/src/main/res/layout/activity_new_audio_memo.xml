@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_audiomemo"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="tu.emi.findetmemo.activity.NewAudioMemoActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            android:title="New Memo">
+
+            <EditText
+                android:id="@+id/edittext_audiomemo_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Title ..." />
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_audiomemo"
+            app:fabSize="normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_pause_white_24dp"/>
+
+
+        <TextView
+            android:id="@+id/textview_audiomemo_recording_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:layout_above="@id/fab_audiomemo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="15dp"
+            android:text="00:00:00"
+            tools:text="00:02:12"
+            />
+
+        <TextView
+            android:id="@+id/textview_audiomemo_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fab_audiomemo"
+            android:layout_marginTop="20dp"
+            android:textAlignment="center"
+            android:text="Aufnahme läuft\nTippe den Button, um die Aufnahme zu beenden"
+            />
+
+        <Button
+            android:id="@+id/button_audiomemo_test_playback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Test play"
+            android:layout_alignParentBottom="true"
+            />
+
+
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

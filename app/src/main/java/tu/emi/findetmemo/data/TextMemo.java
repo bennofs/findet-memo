@@ -15,8 +15,8 @@ public class TextMemo extends Memo {
     }
 
     public static TextMemo create(String title, String textBody) {
-        Date now = new Date();
-        Common common = new Common(title, now, now);
+        final Date now = new Date();
+        final Common common = new Common(title, now, now);
         return new TextMemo(UUID.randomUUID(), common, textBody);
     }
 

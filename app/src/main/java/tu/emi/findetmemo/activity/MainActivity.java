@@ -14,6 +14,7 @@ import io.github.yavski.fabspeeddial.FabSpeedDial;
 import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter;
 import tu.emi.findetmemo.R;
 import tu.emi.findetmemo.adapter.MemoSummaries;
+import tu.emi.findetmemo.classes.SingleAudioPlayer;
 import tu.emi.findetmemo.data.Memo;
 import tu.emi.findetmemo.data.MemoRepository;
 import tu.emi.findetmemo.data.TextMemo;
@@ -25,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private MemoRepository memos;
 
     private RecyclerView viewMemoList;
+
+    private SingleAudioPlayer singlePlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +41,11 @@ public class MainActivity extends AppCompatActivity {
             public boolean onMenuItemSelected(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.action_add_text:
-                        Intent intent = new Intent(MainActivity.this, TextMemoActivity.class);
-                        intent.putExtra(Memo.EXTRA_MEMO, TextMemo.createEmpty());
-                        MainActivity.this.startActivityForResult(intent, EDIT_MEMO_REQUEST);
+                        editMemo(TextMemo.createEmpty());
                         break;
+                    case R.id.action_add_audio:
+                        Intent intent = new Intent(MainActivity.this, NewAudioMemoActivity.class);
+                        startActivityForResult(intent, EDIT_MEMO_REQUEST);
                     default:
                         break;
                 }
@@ -55,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
         viewMemoList = (RecyclerView) findViewById(R.id.recyclerview_memolist);
         viewMemoList.setLayoutManager(new LinearLayoutManager(this));
         viewMemoList.setAdapter(new MemoSummaries(memos, this));
+
+        this.singlePlayer = new SingleAudioPlayer(this);
     }
 
     @Override
@@ -84,6 +90,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        singlePlayer.suspend();
+
+        super.onPause();
+    }
+
+    public SingleAudioPlayer getSingleAudioPlayer() {
+        return singlePlayer;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -98,7 +115,9 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void viewMemo(TextMemo memo) {
+
+
+    public void editMemo(TextMemo memo) {
         Intent intent = new Intent(this, TextMemoActivity.class);
         intent.putExtra(Memo.EXTRA_MEMO, memo);
 

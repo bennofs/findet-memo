@@ -1,6 +1,5 @@
 package tu.emi.findetmemo.view;
 
-import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.TextView;
@@ -9,8 +8,6 @@ import java.text.DateFormat;
 
 import tu.emi.findetmemo.R;
 import tu.emi.findetmemo.activity.MainActivity;
-import tu.emi.findetmemo.activity.TextMemoActivity;
-import tu.emi.findetmemo.data.Memo;
 import tu.emi.findetmemo.data.TextMemo;
 
 public class TextMemoSummary extends ViewTemplate {
@@ -36,7 +33,7 @@ public class TextMemoSummary extends ViewTemplate {
             viewCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    parent.viewMemo(memo);
+                    parent.editMemo(memo);
                 }
             });
         }

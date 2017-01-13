@@ -1,6 +1,7 @@
 package tu.emi.findetmemo.classes;
 
 import android.content.Context;
+import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;

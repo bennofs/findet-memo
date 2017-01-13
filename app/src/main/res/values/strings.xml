@@ -10,4 +10,5 @@
     <string name="text">Text</string>
     <string name="cancel">Cancel</string>
     <string name="play">play</string>
+    <string name="record">start to record audio</string>
 </resources>

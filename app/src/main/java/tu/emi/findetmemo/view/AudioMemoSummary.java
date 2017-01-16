@@ -30,7 +30,6 @@ public class AudioMemoSummary extends ViewTemplate {
         public ViewHolder(View root) {
             super(root);
 
-
             viewTitle = (TextView) findViewById(R.id.textview_memosummary_title);
             viewDate = (TextView) findViewById(R.id.textview_memosummary_date);
             viewPlay = (ImageButton) findViewById(R.id.button_memosummary_play);
@@ -49,6 +48,7 @@ public class AudioMemoSummary extends ViewTemplate {
             final SingleAudioPlayer player = parent.getSingleAudioPlayer();
 
             viewSeek.setMax(memo.duration);
+            viewSeek.setProgress(0);
             viewSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {

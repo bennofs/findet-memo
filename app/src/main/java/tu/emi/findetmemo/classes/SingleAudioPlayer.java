@@ -138,8 +138,8 @@ public class SingleAudioPlayer {
     public void stop() {
         if (player != null && player.isPlaying()) {
             player.stop();
-            if (listener != null) listener.onPaused();
         }
+        if (listener != null) listener.onPaused();
         listener = null;
     }
 
@@ -152,6 +152,13 @@ public class SingleAudioPlayer {
     public void suspend() {
         if (player != null) player.release();
         player = null;
+    }
+
+    public void resume() {
+        if(player == null) {
+            if(listener != null) listener.onPaused();
+        }
+        listener = null;
     }
 
 

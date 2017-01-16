@@ -5,9 +5,12 @@ import android.content.Context;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 
+import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.channels.FileChannel;
 
 public class PausableAudioRecorder {
     // This is the number of frames (audio samples) that we capture per second.
@@ -18,7 +21,7 @@ public class PausableAudioRecorder {
 
     private static final int MIN_BUF_SIZE
             = AudioRecord.getMinBufferSize(SAMPLE_RATE, CHANNEL_CONFIG, AUDIO_FORMAT);
-    private static final int FILE_BUF_SIZE = 1 << 12;
+    private static final int FILE_BUF_SIZE = SAMPLE_RATE * 4;
     private static final int BUF_SIZE = Math.max(FILE_BUF_SIZE, MIN_BUF_SIZE);
 
     private final Context context;
@@ -27,14 +30,15 @@ public class PausableAudioRecorder {
     private final ByteBuffer buffer;
 
     private AudioRecord recorder;
-    private FileOutputStream output;
+    private BufferedOutputStream output;
+    private FileChannel outputChannel;
     private Thread pollThread;
 
     public PausableAudioRecorder(Context context, int audioSource, String fileName) {
         this.context = context;
         this.audioSource = audioSource;
         this.fileName = fileName;
-        this.buffer = ByteBuffer.allocateDirect(BUF_SIZE * 2);
+        this.buffer = ByteBuffer.allocateDirect(BUF_SIZE).order(ByteOrder.LITTLE_ENDIAN);
     }
 
     public void startRecording() throws IOException {
@@ -55,6 +59,7 @@ public class PausableAudioRecorder {
     }
 
     private boolean pollAudio() {
+        buffer.clear();
         int bytesRead = recorder.read(buffer, BUF_SIZE);
         if(bytesRead == 0) return false;
 
@@ -98,14 +103,16 @@ public class PausableAudioRecorder {
     private void initializeOutput() throws IOException {
         if(output != null) return;
 
-        output = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+        FileOutputStream fileStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+        output = new BufferedOutputStream(fileStream);
+        outputChannel = fileStream.getChannel();
         writeWaveHeader();
     }
 
     private void initializeRecorder() {
         if(recorder != null) return;
 
-        recorder = new AudioRecord(audioSource, SAMPLE_RATE, CHANNEL_CONFIG, AUDIO_FORMAT, BUF_SIZE);
+        recorder = new AudioRecord(audioSource, SAMPLE_RATE, CHANNEL_CONFIG, AUDIO_FORMAT, BUF_SIZE * 3);
     }
 
     private void writeWaveHeader() throws IOException {
@@ -142,11 +149,11 @@ public class PausableAudioRecorder {
         final int DATA_SIZE_OFFSET = 12 /* HEADER */ + 24 /* FORMAT CHUNK */ + 4 /* DATA CHUNK ID */;
 
         output.flush();
-        output.getChannel().write(
-                ByteBuffer.wrap(intToBytes((int) output.getChannel().size() - FILE_SIZE_OFFSET - 4)),
+        outputChannel.write(
+                ByteBuffer.wrap(intToBytes((int) outputChannel.size() - FILE_SIZE_OFFSET - 4)),
                 FILE_SIZE_OFFSET);
-        output.getChannel().write(
-                ByteBuffer.wrap(intToBytes((int) output.getChannel().size() - DATA_SIZE_OFFSET - 4)),
+        outputChannel.write(
+                ByteBuffer.wrap(intToBytes((int) outputChannel.size() - DATA_SIZE_OFFSET - 4)),
                 DATA_SIZE_OFFSET);
     }
 

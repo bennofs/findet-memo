@@ -47,7 +47,7 @@ public class SingleAudioPlayer {
 
         if (completed) {
             this.listener.onCompleted();
-        } else if (!this.player.isPlaying()) {
+        } else if (this.player == null || !this.player.isPlaying()) {
             updateCurrentPosition();
             this.listener.onPaused();
         } else {

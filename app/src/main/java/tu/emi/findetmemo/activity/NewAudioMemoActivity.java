@@ -56,7 +56,7 @@ public class NewAudioMemoActivity extends AppCompatActivity {
 
         uuid = UUID.randomUUID();
         handler = new Handler();
-        recorder = new PausableAudioRecorder(this, MediaRecorder.AudioSource.DEFAULT, "recording_" + uuid + ".wav");
+        recorder = new PausableAudioRecorder(this, MediaRecorder.AudioSource.MIC, "recording_" + uuid + ".wav");
 
         viewFab = (FloatingActionButton) findViewById(R.id.fab_audiomemo);
         viewRecordingDuration = (TextView) findViewById(R.id.textview_audiomemo_recording_duration);

@@ -66,10 +66,10 @@ public class MemoSummaries extends RecyclerView.Adapter<BaseViewHolder> {
             c.drawRect(v.getLeft(), v.getTop(), v.getRight(), v.getBottom(), p);
 
             double padding = v.getHeight() * 0.1;
-            int left = (int)(v.getRight() - v.getHeight() + padding);
-            int right = (int)(v.getRight() - padding);
-            int top = (int)(v.getTop() + padding);
-            int bottom = (int)(v.getBottom() - padding);
+            int left = (int) (v.getRight() - v.getHeight() + padding);
+            int right = (int) (v.getRight() - padding);
+            int top = (int) (v.getTop() + padding);
+            int bottom = (int) (v.getBottom() - padding);
 
             iconDelete.setBounds(left, top, right, bottom);
             iconDelete.draw(c);
@@ -173,7 +173,7 @@ public class MemoSummaries extends RecyclerView.Adapter<BaseViewHolder> {
     public int getItemViewType(int position) {
         ViewTemplate template = sortedMemos.get(position).summaryViewTemplate();
         viewTypes.put(template.layoutRes, template);
-            return template.layoutRes;
+        return template.layoutRes;
     }
 
     @Override

@@ -1,6 +1,10 @@
 package tu.emi.findetmemo.view;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.support.v4.content.FileProvider;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -19,6 +23,7 @@ public class AudioMemoSummary extends ViewTemplate {
 
         private final TextView viewTitle;
         private final TextView viewDate;
+        private final Button viewShare;
         private final ImageButton viewPlay;
         private final SeekBar viewSeek;
 
@@ -32,6 +37,7 @@ public class AudioMemoSummary extends ViewTemplate {
 
             viewTitle = (TextView) findViewById(R.id.textview_memosummary_title);
             viewDate = (TextView) findViewById(R.id.textview_memosummary_date);
+            viewShare = (Button) findViewById(R.id.button_memosummary_share);
             viewPlay = (ImageButton) findViewById(R.id.button_memosummary_play);
             viewSeek = (SeekBar) findViewById(R.id.seekbar_memosummary);
         }
@@ -44,6 +50,19 @@ public class AudioMemoSummary extends ViewTemplate {
 
             DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(itemView.getContext().getApplicationContext());
             viewDate.setText(dateFormat.format(memo.common.creationDate));
+
+            viewShare.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Uri contentUri = FileProvider.getUriForFile(parent, "tu.emi.findetmemo.recordings", memo.audioFile);
+
+                    Intent shareIntent = new Intent();
+                    shareIntent.setAction(Intent.ACTION_SEND);
+                    shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
+                    shareIntent.setType("audio/x-wav");
+                    parent.startActivity(shareIntent);
+                }
+            });
 
             final SingleAudioPlayer player = parent.getSingleAudioPlayer();
 

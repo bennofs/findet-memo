@@ -96,6 +96,13 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
     }
 
+    @Override
+    protected void onResume() {
+        singlePlayer.resume();
+
+        super.onResume();
+    }
+
     public SingleAudioPlayer getSingleAudioPlayer() {
         return singlePlayer;
     }

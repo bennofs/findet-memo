@@ -37,6 +37,19 @@
             android:gravity="center_vertical|end"
             tools:text="3 days ago" />
 
+        <Button
+            android:id="@+id/button_memosummary_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignBaseline="@id/textview_memosummary_date"
+            style="?attr/borderlessButtonStyle"
+            android:text="Share"
+            android:textColor="?attr/colorAccent"
+            android:minHeight="0dp"
+            android:minWidth="0dp" />
+
     </RelativeLayout>
 
 

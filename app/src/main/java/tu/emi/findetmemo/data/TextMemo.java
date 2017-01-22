@@ -38,4 +38,15 @@ public class TextMemo extends Memo {
     public ViewTemplate summaryViewTemplate() {
         return new TextMemoSummary();
     }
+
+    public String sharedText() {
+        final StringBuilder builder = new StringBuilder();
+        boolean addNewline = !this.common.title.isEmpty() && !this.textBody.isEmpty();
+        if(!this.common.title.isEmpty()) {
+            builder.append(this.common.title + "\n");
+        }
+        if(addNewline) builder.append("\n");
+        if(!this.textBody.isEmpty()) builder.append(textBody);
+        return builder.toString();
+    }
 }

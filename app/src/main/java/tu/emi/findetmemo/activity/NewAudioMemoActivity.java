@@ -43,6 +43,8 @@ public class NewAudioMemoActivity extends AppCompatActivity {
     private TextView viewRecordingDuration;
     private TextView viewTitle;
 
+    private File outputFile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +58,10 @@ public class NewAudioMemoActivity extends AppCompatActivity {
 
         uuid = UUID.randomUUID();
         handler = new Handler();
-        recorder = new PausableAudioRecorder(this, MediaRecorder.AudioSource.MIC, "recording_" + uuid + ".wav");
+
+        outputFile = new File(getFileStreamPath("recordings"), uuid + ".wav");
+        outputFile.getParentFile().mkdirs();
+        recorder = new PausableAudioRecorder(MediaRecorder.AudioSource.MIC, outputFile);
 
         viewFab = (FloatingActionButton) findViewById(R.id.fab_audiomemo);
         viewRecordingDuration = (TextView) findViewById(R.id.textview_audiomemo_recording_duration);
@@ -184,8 +189,7 @@ public class NewAudioMemoActivity extends AppCompatActivity {
 
 
             final String title = viewTitle.getText().toString();
-            final File target = getFileStreamPath("recording_" + uuid.toString() + ".wav");
-            final AudioMemo memo = AudioMemo.create(title, target, (int) (finishedPartsDuration / oneMilliSec));
+            final AudioMemo memo = AudioMemo.create(title, outputFile, (int) (finishedPartsDuration / oneMilliSec));
 
             final Intent result = new Intent();
             result.putExtra(Memo.EXTRA_MEMO, memo);

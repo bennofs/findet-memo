@@ -6,6 +6,7 @@ import android.media.AudioFormat;
 import android.media.AudioRecord;
 
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -24,9 +25,8 @@ public class PausableAudioRecorder {
     private static final int FILE_BUF_SIZE = SAMPLE_RATE * 4;
     private static final int BUF_SIZE = Math.max(FILE_BUF_SIZE, MIN_BUF_SIZE);
 
-    private final Context context;
     private final int audioSource;
-    private final String fileName;
+    private final File fileName;
     private final ByteBuffer buffer;
 
     private AudioRecord recorder;
@@ -34,8 +34,7 @@ public class PausableAudioRecorder {
     private FileChannel outputChannel;
     private Thread pollThread;
 
-    public PausableAudioRecorder(Context context, int audioSource, String fileName) {
-        this.context = context;
+    public PausableAudioRecorder(int audioSource, File fileName) {
         this.audioSource = audioSource;
         this.fileName = fileName;
         this.buffer = ByteBuffer.allocateDirect(BUF_SIZE).order(ByteOrder.LITTLE_ENDIAN);
@@ -103,7 +102,7 @@ public class PausableAudioRecorder {
     private void initializeOutput() throws IOException {
         if(output != null) return;
 
-        FileOutputStream fileStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+        FileOutputStream fileStream = new FileOutputStream(fileName);
         output = new BufferedOutputStream(fileStream);
         outputChannel = fileStream.getChannel();
         writeWaveHeader();

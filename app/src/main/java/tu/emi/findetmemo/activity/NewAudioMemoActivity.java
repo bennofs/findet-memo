@@ -158,6 +158,7 @@ public class NewAudioMemoActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         try {
+            stopRecording();
             recorder.suspend();
             super.onPause();
         } catch(IOException e) {

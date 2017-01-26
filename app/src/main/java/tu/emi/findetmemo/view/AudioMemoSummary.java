@@ -28,6 +28,7 @@ public class AudioMemoSummary extends ViewTemplate {
         private final SeekBar viewSeek;
 
         private ButtonAction nextAction = ButtonAction.Play;
+        private SingleAudioPlayer player;
 
         public AudioMemo memo;
 
@@ -64,7 +65,7 @@ public class AudioMemoSummary extends ViewTemplate {
                 }
             });
 
-            final SingleAudioPlayer player = parent.getSingleAudioPlayer();
+            this.player = parent.getSingleAudioPlayer();
 
             viewSeek.setMax(memo.duration);
             viewSeek.setProgress(0);
@@ -134,6 +135,13 @@ public class AudioMemoSummary extends ViewTemplate {
             viewPlay.setImageResource(R.drawable.ic_replay_black_24dp);
             viewSeek.setProgress(memo.duration);
             nextAction = ButtonAction.Replay;
+        }
+
+        @Override
+        public void destroy() {
+            if(player != null && nextAction == ButtonAction.Pause) {
+                player.stop();
+            }
         }
     }
 

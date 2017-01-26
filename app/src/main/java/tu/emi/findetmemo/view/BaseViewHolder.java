@@ -15,4 +15,5 @@ abstract public class BaseViewHolder extends RecyclerView.ViewHolder {
     }
 
     public abstract void bind(Object data, MainActivity parent);
+    public abstract void destroy();
 }

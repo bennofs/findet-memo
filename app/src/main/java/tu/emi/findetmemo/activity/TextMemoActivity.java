@@ -36,7 +36,7 @@ public class TextMemoActivity extends AppCompatActivity {
 
         editTextTitle.setText(memo.common.title);
         editTextContent.setText(memo.textBody);
-
+        editTextContent.requestFocus();
     }
 
     @Override

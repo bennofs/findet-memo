@@ -52,6 +52,9 @@ public class TextMemoSummary extends ViewTemplate {
                 }
             });
         }
+
+        @Override
+        public void destroy() {}
     }
 
     public TextMemoSummary() {

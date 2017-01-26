@@ -55,7 +55,10 @@ public class MemoSummaries extends RecyclerView.Adapter<BaseViewHolder> {
 
         @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-            memos.remove(sortedMemos.get(viewHolder.getAdapterPosition()).uuid);
+            BaseViewHolder holder = (BaseViewHolder) viewHolder;
+            holder.destroy();
+            Memo memo = sortedMemos.get(viewHolder.getAdapterPosition());
+            memos.remove(memo.uuid);
         }
 
         @Override

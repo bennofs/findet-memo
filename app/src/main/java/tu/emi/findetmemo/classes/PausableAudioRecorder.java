@@ -91,6 +91,7 @@ public class PausableAudioRecorder {
         if(recorder != null) {
             pauseRecording();
             recorder.release();
+            recorder = null;
         }
     }
 

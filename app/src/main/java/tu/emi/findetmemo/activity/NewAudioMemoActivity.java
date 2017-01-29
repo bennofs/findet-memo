@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,7 +42,7 @@ public class NewAudioMemoActivity extends AppCompatActivity {
 
     private FloatingActionButton viewFab;
     private TextView viewRecordingDuration;
-    private TextView viewTitle;
+    private EditText viewTitle;
 
     private File outputFile;
 
@@ -65,7 +66,7 @@ public class NewAudioMemoActivity extends AppCompatActivity {
 
         viewFab = (FloatingActionButton) findViewById(R.id.fab_audiomemo);
         viewRecordingDuration = (TextView) findViewById(R.id.textview_audiomemo_recording_duration);
-        viewTitle = (TextView) findViewById(R.id.edittext_audiomemo_title);
+        viewTitle = (EditText) findViewById(R.id.edittext_audiomemo_title);
 
         requestMicPermissionAndStart();
     }

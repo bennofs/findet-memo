@@ -180,14 +180,14 @@ public class MemoSummaries extends RecyclerView.Adapter<BaseViewHolder> {
     }
 
     @Override
-    public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View root = LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false);
-        return viewTypes.get(viewType).createViewHolder(root);
+    public BaseViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        View root = LayoutInflater.from(viewGroup.getContext()).inflate(viewType, viewGroup, false);
+        return viewTypes.get(viewType).createViewHolder(root, this.parent);
     }
 
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int position) {
-        holder.bind(sortedMemos.get(position), parent);
+        holder.bind(sortedMemos.get(position));
     }
 
     @Override

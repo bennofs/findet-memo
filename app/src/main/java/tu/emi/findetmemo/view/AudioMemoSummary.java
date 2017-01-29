@@ -21,6 +21,8 @@ public class AudioMemoSummary extends ViewTemplate {
     private static class ViewHolder extends BaseViewHolder implements SingleAudioPlayer.AudioPlayerStateListener {
         private enum ButtonAction {Replay, Play, Pause}
 
+        public final MainActivity parent;
+
         private final TextView viewTitle;
         private final TextView viewDate;
         private final Button viewShare;
@@ -30,11 +32,12 @@ public class AudioMemoSummary extends ViewTemplate {
         private ButtonAction nextAction = ButtonAction.Play;
         private SingleAudioPlayer player;
 
-        public AudioMemo memo;
+        private AudioMemo memo;
 
 
-        public ViewHolder(View root) {
+        public ViewHolder(View root, MainActivity parent) {
             super(root);
+            this.parent = parent;
 
             viewTitle = (TextView) findViewById(R.id.textview_memosummary_title);
             viewDate = (TextView) findViewById(R.id.textview_memosummary_date);
@@ -44,7 +47,7 @@ public class AudioMemoSummary extends ViewTemplate {
         }
 
         @Override
-        public void bind(final Object data, final MainActivity parent) {
+        public void bind(final Object data) {
             memo = (AudioMemo) data;
             viewTitle.setText(memo.common.title);
             viewTitle.setVisibility(memo.common.title.isEmpty() ? View.GONE : View.VISIBLE);
@@ -150,7 +153,7 @@ public class AudioMemoSummary extends ViewTemplate {
     }
 
     @Override
-    public BaseViewHolder createViewHolder(View root) {
-        return new ViewHolder(root);
+    public BaseViewHolder createViewHolder(View root, MainActivity parent) {
+        return new ViewHolder(root, parent);
     }
 }

@@ -19,8 +19,12 @@ public class TextMemoSummary extends ViewTemplate {
         public final TextView viewDate;
         public final Button viewShare;
 
-        public ViewHolder(View root) {
+        private final MainActivity parent;
+
+        public ViewHolder(View root, MainActivity parent) {
             super(root);
+            this.parent = parent;
+
             viewTitle = (TextView) findViewById(R.id.textview_memosummary_title);
             viewCard = (CardView) findViewById(R.id.cardview_memosummary_main);
             viewDate = (TextView) findViewById(R.id.textview_memosummary_date);
@@ -28,7 +32,7 @@ public class TextMemoSummary extends ViewTemplate {
         }
 
         @Override
-        public void bind(Object data, final MainActivity parent) {
+        public void bind(Object data) {
             final TextMemo memo = (TextMemo) data;
             viewTitle.setText(memo.common.title);
 
@@ -62,7 +66,7 @@ public class TextMemoSummary extends ViewTemplate {
     }
 
     @Override
-    public BaseViewHolder createViewHolder(View root) {
-        return new ViewHolder(root);
+    public BaseViewHolder createViewHolder(View root, MainActivity parent) {
+        return new ViewHolder(root, parent);
     }
 }
